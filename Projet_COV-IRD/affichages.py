@@ -53,5 +53,5 @@ def afficheur(theta,longueur,Table_deces,Table_infection):
     plt.legend()
     plt.grid()
 
-    plt.tight_layout(pad=3.0)
+    plt.tight_layout(pad=2.0)
     plt.show()

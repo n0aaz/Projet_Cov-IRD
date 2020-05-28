@@ -1,6 +1,5 @@
 from datetime import datetime,date
-from urllib.request import urlopen, urlretrieve,URLopener
-import wget 
+import wget # Plus besoin d'urllib on va utiliser wget, attention ne pas oublier d'installer wget
 import json
 import numpy as np
 from scipy.optimize import leastsq #Importation de la méthode des moindres carrés
@@ -16,7 +15,7 @@ def recuperer_stats_covid():
     aujourdhui= date.today()
     aujourdhuiString = aujourdhui.strftime("%d-%m-%Y")
     nomfichier ="donnees_covid_"+aujourdhuiString+'.json'
-    if not os.path.isfile(nomfichier):
+    if not os.path.isfile(nomfichier):# On va télécharger seulement si le fichier n'est pas a jour
         wget.download(url,nomfichier)
 
     fichier = open(nomfichier,"r")

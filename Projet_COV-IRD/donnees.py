@@ -6,6 +6,7 @@ from scipy.optimize import leastsq #Importation de la méthode des moindres carr
 from differents_couts import cout_flexible
 import os
 from modeles_SIRD import SIRD_Flexible
+from fonctions_math import integrale_degueu
 
 #champs de 'PaysData' : ["Date","Pays","Infection","Deces","Guerisons","TauxDeces","TauxGuerison","TauxInfection"]
 #champs de 'GlobalData' : ["Date","Infection","Deces","Guerisons","TauxDeces","TauxGuerison","TauxInfection"]
@@ -70,5 +71,5 @@ def simulation(tableD,tableI,beta=None,gamma=None,mu=None,prevision=30,N=60e6):
     if(mu): mu0=mu
     longueur = len(tableD)+prevision
     S,I,R,D= SIRD_Flexible(beta0,gamma0,mu0,np.arange(longueur),N=N)
-    return S,I,R,D
+    return S,integrale_degueu(I),R,D
     

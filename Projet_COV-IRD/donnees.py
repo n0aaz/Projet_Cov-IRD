@@ -33,6 +33,12 @@ def temps_lisible(chaine_temps): #on veut renvoyer une chaine de caractères au 
     format_datetime = renvoyer_datetime(chaine_temps) #chainetemps est une chaine de caractères 
     return format_datetime.strftime(format) #convertit un format datetime en chaine de caractère
 
+def liste_pays():
+    ensemble= {donnee['Pays'] for donnee in covid_dict['PaysData']}
+    ensemble.add("Monde")
+    return ensemble
+
+
 def recup_pays(pays):
     sortie=[]
     if pays=="Monde": #Possibilité de considérer le "monde" comme un pays

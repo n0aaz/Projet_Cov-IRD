@@ -19,24 +19,29 @@ fig = go.Figure()
 affichage_compare(fig,dateItalie,decesItalie,D)
 
 buttons=[]
-listepays=liste_pays()
+listepays=liste_pays()[50:60]
 for pays in listepays:
     donnees_pays = recup_pays(pays)
     date_pays = recup_champ(donnees_pays,'Date')
     infection_pays = recup_champ(donnees_pays,'Infection')
+    deces_pays = recup_champ(donnees_pays,'Deces')
+    S,I,R,D= simulation(deces_pays,infection_pays)
+
     buttons.append(dict(method='restyle',
                         label=pays,
                         visible=True,
-                        args=[{'y':[infection_pays],
-                               'x':[date_pays],
-                               'type':'lines+markers'}],
+                        args=[{'y':[infection_pays,I],
+                               'x':[date_pays,date_pays],
+                               'type':['lines+markers','lines'],
+                               'name':["Réel","Simulation"]
+                               }],
                         ),
                   )
 updatemenu = [dict()]
 updatemenu[0]['buttons']=buttons
 updatemenu[0]['direction']='down'
 updatemenu[0]['showactive']=True
-fig.update_layout(showlegend=False, updatemenus=updatemenu)
+fig.update_layout(updatemenus=updatemenu)
 
 
 fig.show()

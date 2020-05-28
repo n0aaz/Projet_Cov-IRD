@@ -59,6 +59,7 @@ def calcul_coeff(Table_deces,Table_infection,depart=[0.4,0.035,0.005]):
 
 def simulation(tableD,tableI,beta=None,gamma=None,mu=None,prevision=30):
     beta0,gamma0,mu0=calcul_coeff(tableD,tableI)
+    # Si jamais l'utilisateur fournit des valeurs particulières
     if(beta): beta0=beta
     if(gamma): gamma0=gamma
     if(mu): mu0=mu

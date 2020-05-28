@@ -65,4 +65,5 @@ def simulation(tableD,tableI,beta=None,gamma=None,mu=None,prevision=30):
     if(mu): mu0=mu
     longueur = len(tableD)+prevision
     S,I,R,D= SIRD_Flexible(beta0,gamma0,mu0,np.arange(longueur))
+    return S,I,R,D
     

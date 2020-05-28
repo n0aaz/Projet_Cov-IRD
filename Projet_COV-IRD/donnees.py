@@ -19,7 +19,7 @@ def recuperer_stats_covid():
     if not os.path.isfile(nomfichier):# On va télécharger seulement si le fichier n'est pas a jour
         wget.download(url,nomfichier)
 
-    fichier = open(nomfichier,"r")
+    fichier = open(nomfichier,"r",encoding='utf-8')
 
     global covid_dict # va être partagée avec tout le programme à l'instant où cette fonction va être lancée
     covid_dict = json.loads(fichier.read())

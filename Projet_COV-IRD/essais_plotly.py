@@ -2,8 +2,10 @@ import plotly.graph_objects as go
 import numpy as np
 from donnees import *
 from modeles_SIRD import *
+from affichages import *
 
 recuperer_stats_covid()
+print(liste_pays())
 TableItalie=recup_pays('Italie')
 
 decesItalie= recup_champ(TableItalie,'Deces')
@@ -13,54 +15,28 @@ dateItalie = recup_champ(TableItalie,'Date')
 S,I,R,D= simulation(decesItalie,infectionItalie)
 
 fig = go.Figure()
-fig.add_trace(
-    go.Scatter(
-        x=dateItalie, 
-        y=decesItalie,
-        marker= dict(color="Crimson"),
-        name = 'Réel',
-        mode= 'lines+markers'
-        )
-)
-fig.add_trace(
-    go.Scatter(
-        x=dateItalie, 
-        y=D,
-        marker= dict(color="Blue"),
-        mode = 'lines',
-        name= 'Simulation'
-        )
-)
 
-fig.update_layout(
-    updatemenus=[
-        dict(
-            type="buttons",
-            direction='right',
-            active=0,
-            x=0.57,
-            y=1.2,
-            buttons=list([
-                dict(label="Réel",
-                     method="update",
-                     args=[{"visible": [True, False]},
-                           {"title": "Réel",
-                            "annotations": []}]),
-                dict(label="simulation",
-                     method="update",
-                     args=[{"visible": [False, True]},
-                           {"title": "Simulation",
-                            "annotations": []
-                                }
-                            ]
-                        )
-                            
-                               
-                    ]  
-                )
-            ]
-        )
-    )
-    ]
-)
+affichage_compare(fig,dateItalie,decesItalie,D)
+
+buttons=[]
+listepays=liste_pays()
+for pays in listepays:
+    donnees_pays = recup_pays(pays)
+    date_pays = recup_champ(donnees_pays,'Date')
+    infection_pays = recup_champ(donnees_pays,'Infection')
+    buttons.append(dict(method='restyle',
+                        label=pays,
+                        visible=True,
+                        args=[{'y':[infection_pays],
+                               'x':[date_pays],
+                               'type':'lines+markers'}],
+                        ),
+                  )
+updatemenu = [dict()]
+updatemenu[0]['buttons']=buttons
+updatemenu[0]['direction']='down'
+updatemenu[0]['showactive']=True
+fig.update_layout(showlegend=False, updatemenus=updatemenu)
+
+
 fig.show()

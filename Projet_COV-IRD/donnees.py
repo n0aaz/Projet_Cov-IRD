@@ -1,9 +1,11 @@
-from datetime import datetime
-from urllib.request import urlopen
+from datetime import datetime,date
+from urllib.request import urlopen, urlretrieve,URLopener
+import wget 
 import json
 import numpy as np
 from scipy.optimize import leastsq #Importation de la méthode des moindres carrés
 from differents_couts import cout_flexible
+import os
 
 #champs de 'PaysData' : ["Date","Pays","Infection","Deces","Guerisons","TauxDeces","TauxGuerison","TauxInfection"]
 #champs de 'GlobalData' : ["Date","Infection","Deces","Guerisons","TauxDeces","TauxGuerison","TauxInfection"]
@@ -11,9 +13,17 @@ from differents_couts import cout_flexible
 ############  Recuperation de données  ############
 def recuperer_stats_covid():
     url="https://www.data.gouv.fr/fr/datasets/r/a7596877-d7c3-4da6-99c1-2f52d418e881"
-    fichier = urlopen(url)
+    aujourdhui= date.today()
+    aujourdhuiString = aujourdhui.strftime("%d-%m-%Y")
+    nomfichier ="donnees_covid_"+aujourdhuiString+'.json'
+    if not os.path.isfile(nomfichier):
+        wget.download(url,nomfichier)
+
+    fichier = open(nomfichier,"r")
+
     global covid_dict # va être partagée avec tout le programme à l'instant où cette fonction va être lancée
     covid_dict = json.loads(fichier.read())
+    fichier.close()
 
 def renvoyer_datetime(chaine_temps):#permet de transformer une chaine de caractère format ISO en datetime
     return datetime.fromisoformat(chaine_temps)

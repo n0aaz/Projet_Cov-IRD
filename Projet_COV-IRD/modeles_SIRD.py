@@ -78,9 +78,9 @@ def SIRD_tout_variable(beta0,k,gamma0,mu,t,beta1=0,gamma1=0,initial=[1,1,0,1]):
 
 # On va essayer d'en faire une version plus flexible et compacte qui prendrait tout en compte: 
 # Les fonctions beta gamma et mu seront fournies de l'extérieur si non constantes
-def SIRD_Flexible(beta0,gamma0,mu0,t,beta=None,gamma=None,mu=None,initial=[(60e6)-2,2,0,0]):
+def SIRD_Flexible(beta0,gamma0,mu0,t,beta=None,gamma=None,mu=None,N=60e6):
     beta,gamma,mu = remplace_fonction(beta0,beta),remplace_fonction(gamma0,gamma),remplace_fonction(mu0,mu)
-    N=initial[0]+initial[1]
+    initial=[N-2,2,0,0]
     def modele(y,t1):
         S,I,R,D=y
         dS= - beta(t1) * S * I / N

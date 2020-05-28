@@ -10,11 +10,7 @@ decesItalie= recup_champ(TableItalie,'Deces')
 infectionItalie= recup_champ(TableItalie,'Infection')
 dateItalie = recup_champ(TableItalie,'Date')
 
-coeff_opti=calcul_coeff(decesItalie,infectionItalie)
-beta,gamma,mu = coeff_opti
-
-longueur = len(dateItalie)+10
-S,I,R,D= SIRD_Flexible(beta,gamma,mu,np.arange(longueur))
+S,I,R,D= simulation(decesItalie,infectionItalie)
 
 fig = go.Figure()
 fig.add_trace(
@@ -48,13 +44,20 @@ fig.update_layout(
                 dict(label="Réel",
                      method="update",
                      args=[{"visible": [True, False]},
-                           {"title": "SIRD",
+                           {"title": "Réel",
                             "annotations": []}]),
                 dict(label="simulation",
                      method="update",
                      args=[{"visible": [False, True]},
-                           {"title": "SIRD",
-                            "annotations": []}])
+                           {"title": "Simulation",
+                            "annotations": []
+                                }
+                            ]
+                        )
+                            
+                               
+                    ]  
+                )
             ]
         )
     )

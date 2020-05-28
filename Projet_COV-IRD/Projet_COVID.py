@@ -16,4 +16,4 @@ afficheur(coeff_opti,150,TableDeces,TableInfection)
 #plt.plot(range(10),np.arange(10)*20)
 #plt.show()
 
-#COUCOU AMANDINE
+# COUCOU AMANDINE

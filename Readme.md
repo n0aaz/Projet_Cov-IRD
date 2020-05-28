@@ -7,6 +7,9 @@ https://www.data.gouv.fr/fr/datasets/coronavirus-covid19-evolution-par-pays-et-d
 
 Avec ces données un premier objectif est de pouvoir les afficher , le deuxième est de pouvoir le modéliser pour pouvoir faire des prédictions dessus et l'objectif ultime est d'y adjoindre une interface graphique sympa à utiliser. Le modèle mathématique qui nous sert à modéliser l'épidémie est le modèle SIRD à coefficients variables. Voir ici pour plus d'explications https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIRD_model
 
+Et voici ce que ça donne pour la France le 26/05/2020:
+![ Résultat ](https://github.com/n0aaz/Projet_Cov-IRD/blob/master/Images/France_2020-05-26.png?raw=true)
+
 Notre cahier des charges et l'avancement :
   
   - Récupération des données : OK

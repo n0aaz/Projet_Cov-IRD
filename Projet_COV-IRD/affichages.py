@@ -3,6 +3,7 @@ import numpy as np
 from modeles_SIRD import *
 from fonctions_math import integrale_degueu
 from donnees import temps_lisible
+import plotly.graph_objects as go
 
 def reglage_axe_x(x_entree,nbvaleurs):
     position_xticks=[floor(k*len(x_entree)/nbvaleurs) for k in range(nbvaleurs)] #subdivisions égales de l'axe
@@ -55,3 +56,21 @@ def afficheur(theta,longueur,Table_deces,Table_infection):
 
     plt.tight_layout(pad=2.0)
     plt.show()
+
+def affichage_compare(fig,x,reel,simulation):
+    fig.add_trace(
+        go.Scatter(
+            x=x, 
+            y=reel,
+            name = 'Réel',
+            mode= 'lines+markers'
+            )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=x, 
+            y=simulation,
+            mode = 'lines',
+            name= 'Simulation'
+            )
+    )

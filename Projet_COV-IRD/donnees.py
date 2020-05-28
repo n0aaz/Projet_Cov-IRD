@@ -5,6 +5,7 @@ import numpy as np
 from scipy.optimize import leastsq #Importation de la méthode des moindres carrés
 from differents_couts import cout_flexible
 import os
+from modeles_SIRD import SIRD_Flexible
 
 #champs de 'PaysData' : ["Date","Pays","Infection","Deces","Guerisons","TauxDeces","TauxGuerison","TauxInfection"]
 #champs de 'GlobalData' : ["Date","Infection","Deces","Guerisons","TauxDeces","TauxGuerison","TauxInfection"]
@@ -55,3 +56,12 @@ def recup_graphiq(table,champ): #probablement pas obligatoire, associer chaque d
 def calcul_coeff(Table_deces,Table_infection,depart=[0.4,0.035,0.005]):
     coeffDeces, flagDeces = leastsq(cout_flexible, depart , args=(Table_deces,Table_infection))
     return coeffDeces
+
+def simulation(tableD,tableI,beta=None,gamma=None,mu=None,prevision=30):
+    beta0,gamma0,mu0=calcul_coeff(tableD,tableI)
+    if(beta): beta0=beta
+    if(gamma): gamma0=gamma
+    if(mu): mu0=mu
+    longueur = len(tableD)+prevision
+    S,I,R,D= SIRD_Flexible(beta0,gamma0,mu0,np.arange(longueur))
+    

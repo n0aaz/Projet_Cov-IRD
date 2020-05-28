@@ -36,8 +36,7 @@ def temps_lisible(chaine_temps): #on veut renvoyer une chaine de caractères au 
 def liste_pays():
     ensemble= {donnee['Pays'] for donnee in covid_dict['PaysData']}
     ensemble.add("Monde")
-    return ensemble
-
+    return sorted(list(ensemble))
 
 def recup_pays(pays):
     sortie=[]

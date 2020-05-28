@@ -62,13 +62,13 @@ def calcul_coeff(Table_deces,Table_infection,depart=[0.4,0.035,0.005]):
     coeffDeces, flagDeces = leastsq(cout_flexible, depart , args=(Table_deces,Table_infection))
     return coeffDeces
 
-def simulation(tableD,tableI,beta=None,gamma=None,mu=None,prevision=30):
+def simulation(tableD,tableI,beta=None,gamma=None,mu=None,prevision=30,N=60e6):
     beta0,gamma0,mu0=calcul_coeff(tableD,tableI)
     # Si jamais l'utilisateur fournit des valeurs particulières
     if(beta): beta0=beta
     if(gamma): gamma0=gamma
     if(mu): mu0=mu
     longueur = len(tableD)+prevision
-    S,I,R,D= SIRD_Flexible(beta0,gamma0,mu0,np.arange(longueur))
+    S,I,R,D= SIRD_Flexible(beta0,gamma0,mu0,np.arange(longueur),N=N)
     return S,I,R,D
     

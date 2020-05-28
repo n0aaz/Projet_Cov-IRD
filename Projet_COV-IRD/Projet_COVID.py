@@ -15,3 +15,5 @@ afficheur(coeff_opti,135,TableDeces,TableInfection)
 #print(cout_flexible([0.4,0.3,0.04],TableDeces,TableInfection))
 #plt.plot(range(10),np.arange(10)*20)
 #plt.show()
+
+# COUCOU AMANDINE

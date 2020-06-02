@@ -1,0 +1,6 @@
+
+Projet_COV-IRD/donnees_covid_02-06-2020.json
+*.pyc
+Projet_COV-IRD/__pycache__/affichages.cpython-38.pyc
+Projet_COV-IRD/__pycache__/donnees.cpython-38.pyc
+Projet_COV-IRD/__pycache__/modeles_SIRD.cpython-38.pyc

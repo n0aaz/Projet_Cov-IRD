@@ -6,17 +6,17 @@ from affichages import *
 
 recuperer_stats_covid()
 recuperer_simulations()
-TableItalie=recup_pays('Italie')
+TableFrance=recup_pays('France')
 
-decesItalie= recup_champ(TableItalie,'Deces')
-infectionItalie= recup_champ(TableItalie,'Infection')
-dateItalie = recup_champ(TableItalie,'Date')
+decesFrance= recup_champ(TableFrance,'Deces')
+infectionFrance= recup_champ(TableFrance,'Infection')
+dateFrance = recup_champ(TableFrance,'Date')
 
-S,I,R,D= simulation(decesItalie,infectionItalie,"Italie")
+S,I,R,D= simulation(decesFrance,infectionFrance,"France")
 
 fig = go.Figure()
 
-affichage_compare(fig,dateItalie,decesItalie,D)
+affichage_compare(fig,dateFrance,decesFrance,D)
 
 buttons=[]
 listepays=liste_pays()[:50]

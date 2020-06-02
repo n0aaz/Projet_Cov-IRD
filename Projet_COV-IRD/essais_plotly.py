@@ -14,12 +14,18 @@ dateFrance = recup_champ(TableFrance,'Date')
 
 S,I,R,D= simulation(decesFrance,infectionFrance,"France")
 
-fig = go.Figure()
+fig = make_subplots(
+       rows=2,
+       cols=2,
+)
 
-affichage_compare(fig,dateFrance,decesFrance,D)
+affichage_compare(fig,[1,1],dateFrance,decesFrance,D)
+affichage_compare(fig,[1,2],dateFrance,infectionFrance,I)
+affichage_compare(fig,[2,1],dateFrance,derivee(decesFrance,1),derivee(D,1))
+affichage_compare(fig,[2,2],dateFrance,derivee(infectionFrance,1),derivee(I,1))
 
 buttons=[]
-listepays=liste_pays()[:50]
+listepays=liste_pays()[50:150]
 print(listepays)
 for pays in listepays:
     donnees_pays = recup_pays(pays)
@@ -31,8 +37,11 @@ for pays in listepays:
     buttons.append(dict(method='restyle',
                         label=pays,
                         visible=True,
-                        args=[{'y':[infection_pays,I],
-                               'x':[date_pays,date_pays],
+                        args=[{'y':[infection_pays,I,
+                            derivee(infection_pays,1),derivee(I,1),
+                            deces_pays,D,
+                            derivee(deces_pays,1),derivee(D,1)],
+                               'x':date_pays,
                                'type':['lines+markers','lines'],
                                'name':["Réel","Simulation"]
                                }],

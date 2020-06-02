@@ -30,6 +30,22 @@ def recuperer_stats_covid():
     covid_dict = json.loads(fichier.read())
     fichier.close()
 
+def recuperer_simulations():
+    nomfichier=nom_avec_date("simulation_covid")
+    global liste_simulation
+    if os.path.isfile(nomfichier): 
+        fichier= open(nomfichier,'r',encoding='utf-8') # r+ pour read+write
+        liste_simulation=json.load(fichier) # Tout sera stocké dans une liste de dictionnaires
+        fichier.close()
+    else :
+        liste_simulation=[]
+
+def enregistrer_simulations():
+    nomfichier=nom_avec_date("simulation_covid")
+    fichier= open(nomfichier,'w',encoding='utf-8')
+    json.dump(liste_simulation,fichier) 
+    fichier.close()
+    
 def renvoyer_datetime(chaine_temps):#permet de transformer une chaine de caractère format ISO en datetime
     return datetime.fromisoformat(chaine_temps)
 
@@ -68,20 +84,13 @@ def calcul_coeff(Table_deces,Table_infection,depart=[0.4,0.035,0.005]):
     return coeffDeces
 
 def simulation(tableD,tableI,pays,beta=None,gamma=None,mu=None,prevision=30,N=60e6):
-    nomfichier=nom_avec_date("simulation_covid")
     if(beta): beta0=beta
     if(gamma): gamma0=gamma
     if(mu): mu0=mu
 
-    #initialisation des fichiers
-    if os.path.isfile(nomfichier): 
-        fichier= open(nomfichier,'r',encoding='utf-8') # r+ pour read+write
-        liste_simulation=json.load(fichier) # Tout sera stocké dans une liste de dictionnaires
-    
-        for un_pays in liste_simulation:# Si les données sont déjà enregistrées , les lire
-            if un_pays["Pays"]==pays:
-                fichier.close()
-                return un_pays["S"],un_pays["I"],un_pays["R"],un_pays["D"]
+    for un_pays in liste_simulation:# Si les données sont déjà enregistrées , les lire
+        if un_pays["Pays"]==pays:
+            return np.array(un_pays["S"]),np.array(un_pays["I"]),np.array(un_pays["R"]),np.array(un_pays["D"])
     # Sinon les créer
     
     if not (beta or gamma or mu): beta0,gamma0,mu0=calcul_coeff(tableD,tableI) # On prend en compte le cas où l'utilisateur fournit beta,gamma,mu
@@ -101,9 +110,7 @@ def simulation(tableD,tableI,pays,beta=None,gamma=None,mu=None,prevision=30,N=60
         "mu":mu0
     }
     liste_simulation.append(un_pays)
-    fichier= open(nomfichier,'w',encoding='utf-8')
-    json.dump(liste_simulation,fichier) 
-    fichier.close()
+
     return S,Icorrige,R,D
 
 

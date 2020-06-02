@@ -5,6 +5,7 @@ from modeles_SIRD import *
 from affichages import *
 
 recuperer_stats_covid()
+recuperer_simulations()
 TableItalie=recup_pays('Italie')
 
 decesItalie= recup_champ(TableItalie,'Deces')
@@ -18,7 +19,7 @@ fig = go.Figure()
 affichage_compare(fig,dateItalie,decesItalie,D)
 
 buttons=[]
-listepays=liste_pays()
+listepays=liste_pays()[:50]
 print(listepays)
 for pays in listepays:
     donnees_pays = recup_pays(pays)
@@ -43,5 +44,5 @@ updatemenu[0]['direction']='down'
 updatemenu[0]['showactive']=True
 fig.update_layout(updatemenus=updatemenu)
 
-
+enregistrer_simulations()
 fig.show()

@@ -5,27 +5,27 @@ from modeles_SIRD import *
 from affichages import *
 
 recuperer_stats_covid()
-print(liste_pays())
 TableItalie=recup_pays('Italie')
 
 decesItalie= recup_champ(TableItalie,'Deces')
 infectionItalie= recup_champ(TableItalie,'Infection')
 dateItalie = recup_champ(TableItalie,'Date')
 
-S,I,R,D= simulation(decesItalie,infectionItalie)
+S,I,R,D= simulation(decesItalie,infectionItalie,"Italie")
 
 fig = go.Figure()
 
 affichage_compare(fig,dateItalie,decesItalie,D)
 
 buttons=[]
-listepays=liste_pays()[50:60]
+listepays=liste_pays()
+print(listepays)
 for pays in listepays:
     donnees_pays = recup_pays(pays)
     date_pays = recup_champ(donnees_pays,'Date')
     infection_pays = recup_champ(donnees_pays,'Infection')
     deces_pays = recup_champ(donnees_pays,'Deces')
-    S,I,R,D= simulation(deces_pays,infection_pays)
+    S,I,R,D= simulation(deces_pays,infection_pays,pays)
 
     buttons.append(dict(method='restyle',
                         label=pays,

@@ -12,11 +12,15 @@ from fonctions_math import integrale_degueu
 #champs de 'GlobalData' : ["Date","Infection","Deces","Guerisons","TauxDeces","TauxGuerison","TauxInfection"]
 
 ############  Recuperation de données  ############
-def recuperer_stats_covid():
-    url="https://www.data.gouv.fr/fr/datasets/r/a7596877-d7c3-4da6-99c1-2f52d418e881"
+def nom_avec_date(nom):
     aujourdhui= date.today()
     aujourdhuiString = aujourdhui.strftime("%d-%m-%Y")
-    nomfichier ="donnees_covid_"+aujourdhuiString+'.json'
+    return nom+"_"+aujourdhuiString+".json"
+
+
+def recuperer_stats_covid():
+    url="https://www.data.gouv.fr/fr/datasets/r/a7596877-d7c3-4da6-99c1-2f52d418e881"
+    nomfichier =nom_avec_date("donnees_covid")
     if not os.path.isfile(nomfichier):# On va télécharger seulement si le fichier n'est pas a jour
         wget.download(url,nomfichier)
 
@@ -58,19 +62,50 @@ def recup_graphiq(table,champ): #probablement pas obligatoire, associer chaque d
     return np.transpose(sortie)
 
 ######## Fitting des données à la simulation #######
-
 def calcul_coeff(Table_deces,Table_infection,depart=[0.4,0.035,0.005]):
     #coeffDeces, flagDeces = least_sq(cout_flexible, depart , args=(Table_deces,Table_infection))
     coeffDeces = least_squares(cout_flexible, depart , args=(Table_deces,Table_infection)).x
     return coeffDeces
 
-def simulation(tableD,tableI,beta=None,gamma=None,mu=None,prevision=30,N=60e6):
-    beta0,gamma0,mu0=calcul_coeff(tableD,tableI)
-    # Si jamais l'utilisateur fournit des valeurs particulières
+def simulation(tableD,tableI,pays,beta=None,gamma=None,mu=None,prevision=30,N=60e6):
+    nomfichier=nom_avec_date("simulation_covid")
     if(beta): beta0=beta
     if(gamma): gamma0=gamma
     if(mu): mu0=mu
-    longueur = len(tableD)+prevision
+
+    #initialisation des fichiers
+    if os.path.isfile(nomfichier): 
+        fichier= open(nomfichier,'r',encoding='utf-8') # r+ pour read+write
+        liste_simulation=json.load(fichier) # Tout sera stocké dans une liste de dictionnaires
+    
+        for un_pays in liste_simulation:# Si les données sont déjà enregistrées , les lire
+            if un_pays["Pays"]==pays:
+                fichier.close()
+                return un_pays["S"],un_pays["I"],un_pays["R"],un_pays["D"]
+    # Sinon les créer
+    
+    if not (beta or gamma or mu): beta0,gamma0,mu0=calcul_coeff(tableD,tableI) # On prend en compte le cas où l'utilisateur fournit beta,gamma,mu
+    
+    longueur = len(tableD)+prevision # par défaut 30 jours de prévision
     S,I,R,D= SIRD_Flexible(beta0,gamma0,mu0,np.arange(longueur),N=N)
-    return S,integrale_degueu(I),R,D
+    Icorrige=integrale_degueu(I)
+
+    un_pays= {
+        "Pays": pays,
+        "S":S.tolist(),
+        "I":Icorrige,
+        "R":R.tolist(),
+        "D":D.tolist(),
+        "beta":beta0,
+        "gamma":gamma0,
+        "mu":mu0
+    }
+    liste_simulation.append(un_pays)
+    fichier= open(nomfichier,'w',encoding='utf-8')
+    json.dump(liste_simulation,fichier) 
+    fichier.close()
+    return S,Icorrige,R,D
+
+
+    
     

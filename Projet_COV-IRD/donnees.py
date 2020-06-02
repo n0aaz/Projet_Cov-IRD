@@ -2,7 +2,7 @@ from datetime import datetime,date
 import wget # Plus besoin d'urllib on va utiliser wget, attention ne pas oublier d'installer wget
 import json
 import numpy as np
-from scipy.optimize import leastsq #Importation de la méthode des moindres carrés
+from scipy.optimize import leastsq, least_squares #Importation de la méthode des moindres carrés
 from differents_couts import cout_flexible
 import os
 from modeles_SIRD import SIRD_Flexible
@@ -60,7 +60,8 @@ def recup_graphiq(table,champ): #probablement pas obligatoire, associer chaque d
 ######## Fitting des données à la simulation #######
 
 def calcul_coeff(Table_deces,Table_infection,depart=[0.4,0.035,0.005]):
-    coeffDeces, flagDeces = leastsq(cout_flexible, depart , args=(Table_deces,Table_infection))
+    #coeffDeces, flagDeces = least_sq(cout_flexible, depart , args=(Table_deces,Table_infection))
+    coeffDeces = least_squares(cout_flexible, depart , args=(Table_deces,Table_infection)).x
     return coeffDeces
 
 def simulation(tableD,tableI,beta=None,gamma=None,mu=None,prevision=30,N=60e6):

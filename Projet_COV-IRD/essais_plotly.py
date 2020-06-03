@@ -23,7 +23,9 @@ fig = make_subplots(
        shared_xaxes=True,
        subplot_titles=["Total",'Tableau','Journalier'],
        specs=[[{"type":"scatter"},{"type":'table','rowspan':2}],
-              [{"type":"scatter"},None]]
+              [{"type":"scatter"},None]],
+       column_widths=[0.6,0.4],
+       horizontal_spacing=0.01
 )
 
 
@@ -36,6 +38,9 @@ affichage_compare(fig,[1,2],dateFrance,derivee(infectionFrance,1),derivee(I,1),"
 affichage_compare(fig,[1,2],dateFrance,derivee(guerisonFrance,1),derivee(R,1),"Guérison")
 
 colonnes_tableau=["Pays","correlation","beta","gamma","mu"]
+valeurs_tableau=tableau_annexe(colonnes_tableau)
+#on va arrondir les valeurs du tableau, sinon c'est laid
+valeurs_tableau=[np.around(donnees,3) if type(donnees[0])==float else donnees for donnees in valeurs_tableau]
 fig.add_trace(
        go.Table(
               header=dict(
@@ -43,8 +48,9 @@ fig.add_trace(
                      font=dict(size=10),
                      align="left"),
               cells=dict(
-                     values=tableau_annexe(colonnes_tableau),
-                     align='left'
+                     values=valeurs_tableau,
+                     align='left',
+                     
               )
        ),
        row=1,col=2

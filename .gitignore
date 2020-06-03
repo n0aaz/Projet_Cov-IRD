@@ -6,3 +6,4 @@ Projet_COV-IRD/__pycache__/donnees.cpython-38.pyc
 Projet_COV-IRD/__pycache__/modeles_SIRD.cpython-38.pyc
 Projet_COV-IRD/.ipynb_checkpoints/test-checkpoint.ipynb
 *.json
+*.pyc

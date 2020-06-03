@@ -58,13 +58,13 @@ def afficheur(theta,longueur,Table_deces,Table_infection):
     plt.tight_layout(pad=2.0)
     plt.show()
 
-def affichage_compare(fig,localisation,x,reel,simulation):
+def affichage_compare(fig,localisation,x,reel,simulation,nom):
     x_graphe,y_graphe= localisation
     fig.add_trace(
         go.Scatter(
             x=x, 
             y=reel,
-            name = 'Réel',
+            name = nom+' Réel',
             mode= 'lines+markers'
             ),
         row=y_graphe,col=x_graphe
@@ -74,7 +74,7 @@ def affichage_compare(fig,localisation,x,reel,simulation):
             x=x, 
             y=simulation,
             mode = 'lines',
-            name= 'Simulation'
+            name= nom+' Simulation'
             ),
         row=y_graphe,col=x_graphe
     )

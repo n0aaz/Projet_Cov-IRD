@@ -174,4 +174,4 @@ def conso_alcool(nompays):
     for elem in donnees_alcool:
         if elem['location']==nompays:
             return elem['alcohol']
-    return "non traduit"
+    return "0"

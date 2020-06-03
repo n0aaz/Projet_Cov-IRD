@@ -1,6 +1,6 @@
 from datetime import datetime,date,timedelta
 import wget # Plus besoin d'urllib on va utiliser wget, attention ne pas oublier d'installer wget
-import json
+import json,csv
 import numpy as np
 from scipy.optimize import leastsq, least_squares #Importation de la méthode des moindres carrés
 from differents_couts import cout_flexible
@@ -125,3 +125,25 @@ def simulation(tableD,tableI,pays,beta=None,gamma=None,mu=None,prevision=30,N=60
 
 def tableau_annexe(colonnes):
         return [recup_champ(liste_simulation,colonne)for colonne in colonnes]
+
+
+##### lien avec d'autres bdd ######
+def recuperer_codepays():
+    url="https://sql.sh/ressources/sql-pays/sql-pays.csv"
+    nomfichier ="sql-pays.csv"
+    if not os.path.isfile(nomfichier):# On va télécharger seulement si le fichier n'est pas a jour
+        wget.download(url,nomfichier)
+
+    fichier = open(nomfichier,"r",encoding='utf-8')
+    global touslespays
+
+    reader = csv.DictReader(fichier,skipinitialspace=True)
+    elements= ['id','code','alpha2','alpha3','fr','en']
+    touslespays= [{k: v for k, v in row.items()} for row in reader]
+    return touslespays
+
+def fr_to_en(nompays):
+    for pays in touslespays:
+        if pays['fr']==nompays:
+            return pays['en']
+    return "non traduit"

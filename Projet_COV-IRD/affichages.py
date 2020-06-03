@@ -5,6 +5,7 @@ from fonctions_math import integrale_degueu
 from donnees import temps_lisible,generer_jours_simulation
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from plotly.colors import n_colors
 
 def reglage_axe_x(x_entree,nbvaleurs):
     position_xticks=[floor(k*len(x_entree)/nbvaleurs) for k in range(nbvaleurs)] #subdivisions égales de l'axe
@@ -78,3 +79,9 @@ def affichage_compare(fig,localisation,x,reel,simulation,nom):
             ),
         row=y_graphe,col=x_graphe
     )
+
+def code_couleur(tableau,mini,maxi):
+    tab_coul=n_colors('rgb(200, 100, 100)', 'rgb(100, 200, 100)', 100, colortype='rgb')
+    tab_pourcent= [np.int((v-mini)*100/(maxi-mini)) for v in tableau]
+    print(tab_pourcent)
+    return np.array(tab_coul)[tab_pourcent]

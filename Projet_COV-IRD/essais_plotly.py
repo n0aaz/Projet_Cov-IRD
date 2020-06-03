@@ -1,4 +1,5 @@
 import plotly.graph_objects as go
+from plotly.colors import n_colors
 import numpy as np
 from donnees import *
 from modeles_SIRD import *
@@ -41,6 +42,7 @@ colonnes_tableau=["Pays","correlation","beta","gamma","mu"]
 valeurs_tableau=tableau_annexe(colonnes_tableau)
 #on va arrondir les valeurs du tableau, sinon c'est laid
 valeurs_tableau=[np.around(donnees,3) if type(donnees[0])==float else donnees for donnees in valeurs_tableau]
+couleurs=code_couleur(valeurs_tableau[1],-1,1)
 fig.add_trace(
        go.Table(
               header=dict(
@@ -50,6 +52,7 @@ fig.add_trace(
               cells=dict(
                      values=valeurs_tableau,
                      align='left',
+                     fill_color=['white',couleurs,'white','white','white']
                      
               )
        ),

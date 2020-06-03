@@ -26,10 +26,10 @@ fig = make_subplots(
 
 affichage_compare(fig,[1,1],dateFrance,decesFrance,D,"Deces")
 affichage_compare(fig,[1,1],dateFrance,infectionFrance,I,"Infection")
-affichage_compare(fig,[1,1],dateFrance,guerisonFrance,I,"Guérison")
+affichage_compare(fig,[1,1],dateFrance,guerisonFrance,R,"Guérison")
 affichage_compare(fig,[1,2],dateFrance,derivee(decesFrance,1),derivee(D,1),"Deces")
 affichage_compare(fig,[1,2],dateFrance,derivee(infectionFrance,1),derivee(I,1),"Infection")
-affichage_compare(fig,[1,2],dateFrance,derivee(guerisonFrance,1),derivee(I,1),"Guérison")
+affichage_compare(fig,[1,2],dateFrance,derivee(guerisonFrance,1),derivee(R,1),"Guérison")
 
 buttons=[]
 listepays=liste_pays()[:10]
@@ -50,6 +50,7 @@ for pays in listepays:
                      derivee(deces_pays,1),derivee(D,1),
                      derivee(infection_pays,1),derivee(I,1),
                      derivee(guerison_pays,1),derivee(R,1)]
+    #noms_courbe=["Décès réels","Décès simulés"Infections Réelles"]
 
 
     buttons.append(dict(method='update',
@@ -57,9 +58,9 @@ for pays in listepays:
                         visible=True,
                         args=[{'y':donnees_bouton,
                             
-                               'x':[date_pays]*2,
+                               'x':generer_jours_simulation(date_pays),
                                'type':['lines+markers','lines'],
-                               'name':["Réel","Simulation"],
+                               #'name':["Réel","Simulation"],
                                },
                                {'subplot_titles':pays}
                                ],

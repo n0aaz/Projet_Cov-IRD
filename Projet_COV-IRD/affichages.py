@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from modeles_SIRD import *
 from fonctions_math import integrale_degueu
-from donnees import temps_lisible
+from donnees import temps_lisible,generer_jours_simulation
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -71,7 +71,7 @@ def affichage_compare(fig,localisation,x,reel,simulation,nom):
     )
     fig.add_trace(
         go.Scatter(
-            x=x, 
+            x=generer_jours_simulation(x), 
             y=simulation,
             mode = 'lines',
             name= nom+' Simulation'

@@ -147,3 +147,9 @@ def fr_to_en(nompays):
         if pays['fr']==nompays:
             return pays['en']
     return "non traduit"
+
+def en_to_fr(nompays):
+    for pays in touslespays:
+        if pays['en']==nompays:
+            return pays['fr']
+    return "non traduit"

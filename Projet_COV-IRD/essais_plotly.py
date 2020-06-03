@@ -19,10 +19,14 @@ S,I,R,D= simulation(decesFrance,infectionFrance,"France")
 
 fig = make_subplots(
        rows=2,
-       cols=1,
+       cols=2,
        shared_xaxes=True,
-       subplot_titles=["Total",'Journalier']
+       subplot_titles=["Total",'Tableau','Journalier'],
+       specs=[[{"type":"scatter"},{"type":'table','rowspan':2}],
+              [{"type":"scatter"},None]]
 )
+
+
 
 affichage_compare(fig,[1,1],dateFrance,decesFrance,D,"Deces")
 affichage_compare(fig,[1,1],dateFrance,infectionFrance,I,"Infection")
@@ -30,6 +34,21 @@ affichage_compare(fig,[1,1],dateFrance,guerisonFrance,R,"Guérison")
 affichage_compare(fig,[1,2],dateFrance,derivee(decesFrance,1),derivee(D,1),"Deces")
 affichage_compare(fig,[1,2],dateFrance,derivee(infectionFrance,1),derivee(I,1),"Infection")
 affichage_compare(fig,[1,2],dateFrance,derivee(guerisonFrance,1),derivee(R,1),"Guérison")
+
+colonnes_tableau=["Pays","correlation","beta","gamma","mu"]
+fig.add_trace(
+       go.Table(
+              header=dict(
+                     values=colonnes_tableau,
+                     font=dict(size=10),
+                     align="left"),
+              cells=dict(
+                     values=tableau_annexe(colonnes_tableau),
+                     align='left'
+              )
+       ),
+       row=1,col=2
+)
 
 buttons=[]
 listepays=liste_pays()[:10]
@@ -53,14 +72,13 @@ for pays in listepays:
     #noms_courbe=["Décès réels","Décès simulés"Infections Réelles"]
 
 
-    buttons.append(dict(method='update',
+    buttons.append(dict(method='restyle',
                         label=pays,
                         visible=True,
                         args=[{'y':donnees_bouton,
-                               'x':generer_jours_simulation(date_pays),
-                               'type':['lines+markers','lines'],
-                               },
-                               {'subplot_titles':pays}
+                               'x':[generer_jours_simulation(date_pays)]*len(donnees_bouton),
+                               #'type':['lines+markers','lines'],
+                               }
                                ],
                         ),
                   )

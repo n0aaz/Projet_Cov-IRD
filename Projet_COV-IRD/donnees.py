@@ -116,12 +116,12 @@ def simulation(tableD,tableI,pays,beta=None,gamma=None,mu=None,prevision=30,N=60
         "beta":beta0,
         "gamma":gamma0,
         "mu":mu0,
-        "correlation":np.corrcoef(D[:len(tableD)],tableD)[1,0]
+        "correlation":np.corrcoef(D[:len(tableD)],tableD)[0,1]
     }
     liste_simulation.append(un_pays)
 
     return S,Icorrige,R,D
 
 
-    
-    
+def tableau_annexe(colonnes):
+        return [recup_champ(liste_simulation,colonne)for colonne in colonnes]

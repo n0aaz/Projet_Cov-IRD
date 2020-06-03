@@ -57,10 +57,8 @@ for pays in listepays:
                         label=pays,
                         visible=True,
                         args=[{'y':donnees_bouton,
-                            
                                'x':generer_jours_simulation(date_pays),
                                'type':['lines+markers','lines'],
-                               #'name':["Réel","Simulation"],
                                },
                                {'subplot_titles':pays}
                                ],

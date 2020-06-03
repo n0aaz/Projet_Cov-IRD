@@ -82,6 +82,5 @@ def affichage_compare(fig,localisation,x,reel,simulation,nom):
 
 def code_couleur(tableau,mini,maxi):
     tab_coul=n_colors('rgb(200, 100, 100)', 'rgb(100, 200, 100)', 100, colortype='rgb')
-    tab_pourcent= [np.int((v-mini)*100/(maxi-mini)) for v in tableau]
-    print(tab_pourcent)
+    tab_pourcent= [np.int((v-mini)*100/(maxi-mini)) if not np.isnan(v) else 0 for v in tableau]
     return np.array(tab_coul)[tab_pourcent]

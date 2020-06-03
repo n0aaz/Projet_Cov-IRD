@@ -60,7 +60,7 @@ fig.add_trace(
 )
 
 buttons=[]
-listepays=liste_pays()[:10]
+listepays=liste_pays()#[:10]
 if pays_defaut not in listepays:
        listepays.insert(0,pays_defaut)
 print(listepays)

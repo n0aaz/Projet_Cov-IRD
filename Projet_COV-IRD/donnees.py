@@ -1,4 +1,4 @@
-from datetime import datetime,date
+from datetime import datetime,date,timedelta
 import wget # Plus besoin d'urllib on va utiliser wget, attention ne pas oublier d'installer wget
 import json
 import numpy as np
@@ -16,6 +16,14 @@ def nom_avec_date(nom):
     aujourdhui= date.today()
     aujourdhuiString = aujourdhui.strftime("%d-%m-%Y")
     return nom+"_"+aujourdhuiString+".json"
+
+def generer_jours_simulation(dates):
+    derniere_date= dates[-1]
+    datetime_dernier=datetime.fromisoformat(derniere_date)
+    un_jour= timedelta(days=1)
+    forme= "%Y-%m-%dT%H:%M:%S"
+    trente_jours=[(datetime_dernier+i*un_jour).strftime(forme) for i in range(30)]
+    return dates+trente_jours
 
 
 def recuperer_stats_covid():

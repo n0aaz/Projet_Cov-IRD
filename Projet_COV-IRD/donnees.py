@@ -140,6 +140,7 @@ def recuperer_codepays():
     reader = csv.DictReader(fichier,skipinitialspace=True)
     elements= ['id','code','alpha2','alpha3','fr','en']
     touslespays= [{k: v for k, v in row.items()} for row in reader]
+    fichier.close()
     return touslespays
 
 def fr_to_en(nompays):
@@ -152,4 +153,25 @@ def en_to_fr(nompays):
     for pays in touslespays:
         if pays['en']==nompays:
             return pays['fr']
+    return "non traduit"
+
+def recup_donnees_alcool():
+    url="https://raw.githubusercontent.com/plotly/datasets/master/2010_alcohol_consumption_by_country.csv"
+    nomfichier ="2010_alcohol_consumption_by_country.csv"
+    if not os.path.isfile(nomfichier):# On va télécharger seulement si le fichier n'est pas a jour
+        wget.download(url,nomfichier)
+
+    fichier = open(nomfichier,"r",encoding='utf-8')
+    global donnees_alcool
+
+    reader = csv.DictReader(fichier,skipinitialspace=True)
+    elements= ['location','alcohol']
+    donnees_alcool= [{k: v for k, v in row.items()} for row in reader]
+    fichier.close()
+    return donnees_alcool
+
+def conso_alcool(nompays):
+    for elem in donnees_alcool:
+        if elem['location']==nompays:
+            return elem['alcohol']
     return "non traduit"
